@@ -1,0 +1,7 @@
+envs:
+  argocd:
+    apps:
+      nginx-manifests: {}
+vars:
+  namespace: nginx-demo
+  version: 0.1.0
