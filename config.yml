@@ -1,7 +1,36 @@
 envs:
-  argocd:
+  demo:
     apps:
-      nginx-manifests: {}
+      bootstrap: { vars: { argocd: "${app_presets[default]}" } }
+      nginx:
+        {
+          app_deployer: bootstrap,
+          vars:
+            {
+              argocd:
+                {
+                  project: default,
+                  source:
+                    {
+                      path: "${output_path}",
+                      repo_url: https://github.com/DanielCastro1021/make-argocd-fly-tutorial.git,
+                      target_revision: HEAD,
+                    },
+                  destination:
+                    {
+                      server: https://kubernetes.default.svc,
+                      namespace: "${namespace}",
+                    },
+                },
+            },
+        }
+
 vars:
   namespace: nginx-demo
   version: 0.1.0
+  output_path: output/argocd/nginx
+  app_presets:
+    default:
+      project: default
+      destination:
+        namespace: ${namespace}
